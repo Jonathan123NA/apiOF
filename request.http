@@ -1,0 +1,35 @@
+GET http://localhost:3000/api/ HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/2 HTTP/1.1
+
+###
+
+POST http://localhost:3000/api HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "Articulo 4",
+    "descripcion": "Descripción articulo 3",
+    "cantidad": 10,
+    "estado": 0,
+    "id_tipo": 1
+}
+
+###
+
+PUT http://localhost:3000/api/4 HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "Articulo 2 Actualizado",
+    "descripcion": "Descripción articulo 2 actualizado",
+    "cantidad": 20,
+    "estado": 1,
+    "id_tipo": 2
+}
+
+###
+
+DELETE http://localhost:3000/api/3 HTTP/1.1
