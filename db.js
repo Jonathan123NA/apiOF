@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const knex = require('knex');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -15,4 +16,17 @@ connection.connect((err) => {
     }
 });
 
-module.exports = connection;
+const db = knex({
+  client: 'mysql',
+  connection: {
+    host: 'ordenfacilsql.mysql.database.azure.com',
+    user: 'ordenfacilsql',
+    password: 'Polinesios2023.',
+    database: 'ordenfacil',
+  },
+});
+
+module.exports = {
+    connection,
+    db
+};
