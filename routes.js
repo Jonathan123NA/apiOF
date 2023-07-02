@@ -18,4 +18,12 @@ router.post('/creacionOrden/', serviceOrdenes.createOrden);
 router.delete('/eliminacionOrden/:id', serviceOrdenes.deleteOrden);
 router.put('/actualizacionOrden/:id', serviceOrdenes.updateOrden);
 
+//Rutas Personas
+const servicePersonas = require('./services/personasService');
+router.get('/personas/', servicePersonas.getAllPersons);
+router.get('/personas/:id', servicePersonas.getPersonById);
+router.post('/personas/', servicePersonas.createPerson);
+router.delete('/personas/:id', servicePersonas.deletePerson);
+router.put('/personas/:id', servicePersonas.updatePerson);
+
 module.exports = router;
