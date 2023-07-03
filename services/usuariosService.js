@@ -76,7 +76,7 @@ async function updateUser(req, res) {
     return res.status(200).json({ message: 'Usuario actualizado correctamente'});
 }
 async function deleteUser(req, res) {
-    const id_persona = req.params.id_persona;
+    const id_persona = req.params.id;
     await connection.db('personas').where('id', id_persona).del()
     .then((count) => {
         console.log(count);
