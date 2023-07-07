@@ -26,4 +26,12 @@ router.post('/usuarios/', serviceUsuarios.createUser);
 router.delete('/usuarios/:id', serviceUsuarios.deleteUser);
 router.put('/usuarios/:id', serviceUsuarios.updateUser);
 
+//Rutas Tipo Articulo
+const serviceTypeArticle = require('./services/tipoArticulosService');
+router.get('/tipo_articulos/', serviceTypeArticle.getAllTypeArticle);
+router.get('/tipo_articulos/:id', serviceTypeArticle.getTypeArticleById);
+router.post('/tipo_articulos/', serviceTypeArticle.createTypeArticle);
+router.delete('/tipo_articulos/:id', serviceTypeArticle.deleteTypeArticle);
+router.put('/tipo_articulos/:id', serviceTypeArticle.updateTypeArticle);
+
 module.exports = router;
