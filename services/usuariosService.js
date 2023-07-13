@@ -1,6 +1,7 @@
 const connection = require('../db');
 
 async function getAllUsers(req, res) {
+    console.log("usuarios");
 
     await connection.db.select().from('usuarios').innerJoin('personas', 'usuarios.id_persona', 'personas.id').then((data) => {
         res.status(200).json(data);
@@ -88,10 +89,34 @@ async function deleteUser(req, res) {
     });
 }
 
+async function verifyCredentials(req, res) {
+    const { email, password } = req.body;
+    console.log("login");
+    try {
+      // Realizar la consulta en la base de datos para verificar las credenciales
+      const user = await connection.db
+        .select()
+        .from('usuarios')
+        .innerJoin('personas', 'usuarios.id_persona', 'personas.id')
+        .where('usuarios.email', email)
+        .andWhere('usuarios.password', password)
+        .first();
+      if (user) {
+        res.status(200).json({ loggedIn: true });
+      } else {
+        res.json({ loggedIn: false });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: 'Error al verificar las credenciales' });
+    }
+  }
+  
 module.exports = {
     getAllUsers,
     getUserById,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    verifyCredentials
 };

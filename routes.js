@@ -34,4 +34,7 @@ router.post('/tipo_articulos/', serviceTypeArticle.createTypeArticle);
 router.delete('/tipo_articulos/:id', serviceTypeArticle.deleteTypeArticle);
 router.put('/tipo_articulos/:id', serviceTypeArticle.updateTypeArticle);
 
+//Endpoint para verificar las credenciales del usuario
+router.post('/verificar-credenciales', serviceUsuarios.verifyCredentials);
+
 module.exports = router;
