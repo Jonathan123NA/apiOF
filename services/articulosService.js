@@ -3,6 +3,7 @@ const connection = db.connection;
 
 
 function getAllArticles(req, res) {
+    console.log("Articulos");
     db.db.select().from('articulos').then((data) => {
         return res.status(200).json(data);
     })
