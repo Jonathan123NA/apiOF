@@ -3,18 +3,28 @@ const connection = db.connection;
 
 
 function getAllArticles(req, res) {
-    console.log("Articulos");
-    db.db.select().from('articulos').then((data) => {
+    db.db
+    .select('a.id', 'a.nombre', 'a.descripcion', 'a.cantidad', 't.tipo')
+    .select(db.db.raw("IF(a.estado = 1, 'Activo', 'Inactivo') AS estado"))
+    .from('articulos as a')
+    .join('tipo_articulos as t', 'a.id_tipo', 't.id').then((data) => {
+        console.log(data);
         return res.status(200).json(data);
     })
     .catch((err) => {
-        return res.status(500).json({ message: 'Error al obtener los articulos' });
+        return res.status(500).json({ message: 'Error al obtener los articulos', err: err });
     });
 }
 
 function getArticleById(req, res) {
     const id = req.params.id;
-    db.db.select().from('articulos').where('id', id).then((data) => {
+    db.db
+    .select('a.id', 'a.nombre', 'a.descripcion', 'a.cantidad', 't.tipo')
+    .select(db.db.raw("IF(a.estado = 1, 'Activo', 'Inactivo') AS estado"))
+    .from('articulos as a')
+    .join('tipo_articulos as t', 'a.id_tipo', 't.id')
+    .where('id', id)
+    .then((data) => {
         return res.status(200).json(data[0]);
     })
     .catch((err) => {
@@ -38,7 +48,7 @@ function deleteArticle(req, res) {
         if(count == 0) return res.status(404).json({ message: 'Articulo no encontrado' });
         return res.status(200).json({ message: 'Articulo eliminado correctamente' });
     })
-    .connection((err) => {
+    .catch((err) => {
         return res.status(500).json({ message: 'Error al eliminar el articulo' });
     });
 }
@@ -50,7 +60,7 @@ function updateArticle(req, res) {
         if(count == 0) return res.status(404).json({ message: 'Articulo no encontrado' });
         return res.status(200).json({ message: 'Articulo actualizado correctamente' });
     })
-    .connection((err) => {
+    .catch((err) => {
         return res.status(500).json({ message: 'Error al actualizar el articulo' });
     });
 }
