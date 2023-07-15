@@ -1,56 +1,61 @@
-const connection = require('../db');
+const db = require('../db');
 
 function getAllTypeArticle(req, res) {
-    connection.query('SELECT * FROM tipo_articulos', (err, rows) => {
-        if (err) 
-            return res.status(500).send(err);
-
-        res.json(rows);
+    db.select().from('tipo_articulos').then((rows) => {
+        return res.status(200).json(rows);
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: 'Error al obtener los tipos de articulos' });
     });
 }
 
 function getTypeArticleById(req, res) {
     const id = req.params.id;
-    connection.query('SELECT * FROM tipo_articulos WHERE id = ?', id, (err, rows) => {
-        if (err) 
-            return res.status(500).send(err);
-
+    db.select().from('tipo_articulos').where('id', id).then((rows) => {
         if (rows.length === 0) {
-            return res.status(404).send('Tipo de articulo no encontrado');
+            return res.status(404).json({ message: 'Tipo de articulo no encontrado' });
         }
-
-        res.json(rows[0]);
+        return res.status(200).json(rows[0]);
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: 'Error al obtener el tipo de articulo' });
     });
 }
 
 function createTypeArticle(req, res) {
     const tipo = req.body;
-    connection.query('INSERT INTO tipo_articulos SET ?', tipo, (err, result) => {
-        if (err) 
-            return res.status(500).send(err);
-
-        res.json({ message: 'Tipo de Articulo añadido!' });
-    });
+    db.insert(tipo).into('tipo_articulos').then((result) => {
+        return res.status(200).json({ message: 'Tipo de Articulo añadido!' });
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: 'Error al añadir el tipo de articulo' });
+    }); 
 }
 
 function deleteTypeArticle(req, res) {
     const id = req.params.id;
-    connection.query('DELETE FROM tipo_articulos WHERE id = ?', id, (err, result) => {
-        if (err) 
-            return res.status(500).send(err);
-
-        res.json({ message: 'Tipo de Articulo eliminado!' });
+    db('articulos').where('id_tipo_articulo', id).del().then((count) => {
+        if (count === 0) {
+            return res.status(404).send('Tipo de articulo no encontrado');
+        }
+        return res.status(200).json({ message: 'Tipo de Articulo eliminado!' });
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: 'Error al eliminar el tipo de articulo' });
     });
 }
 
 function updateTypeArticle(req, res) {
     const id = req.params.id;
     const tipo = req.body;
-    connection.query('UPDATE tipo_articulos SET ? WHERE id = ?', [tipo, id], (err, result) => {
-        if (err) 
-            return res.status(500).send(err);
-
-        res.json({ message: 'Tipo de Articulo actualizado!' });
+    db('tipo_articulos').where('id', id).update(tipo).then((count) => {
+        if (count === 0) {
+            return res.status(404).send('Tipo de articulo no encontrado');
+        }
+        return res.status(200).json({ message: 'Tipo de Articulo actualizado!' });
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: 'Error al actualizar el tipo de articulo' });
     });
 }
 

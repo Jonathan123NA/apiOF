@@ -1,9 +1,14 @@
-const connection = require('../db');
+const db = require('../db');
 
 async function getAllUsers(req, res) {
     console.log("usuarios");
 
-    await connection.db.select().from('usuarios').innerJoin('personas', 'usuarios.id_persona', 'personas.id').then((data) => {
+    await db
+    .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
+    'u.password', db.raw("IF(u.rol = 1, 'Administrador', 'Empleado') AS rol"), 'u.id_persona')
+    .from('personas as p')
+    .join('usuarios as u', 'p.id', 'u.id_persona')
+    .then((data) => {
         res.status(200).json(data);
     })
     .catch((err) => {
@@ -14,7 +19,12 @@ async function getAllUsers(req, res) {
 }
 async function getUserById(req, res) {
     const id = req.params.id;
-    await connection.db.select().from('usuarios').innerJoin('personas', 'usuarios.id_persona', 'personas.id').where('usuarios.id', id).then((data) => {
+    await db
+    .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
+    'u.password', db.raw("IF(u.rol = 1, 'Administrador', 'Empleado') AS rol"), 'u.id_persona')
+    .from('personas as p')
+    .join('usuarios as u', 'p.id', 'u.id_persona')
+    .then((data) => {
         res.status(200).json(data[0]);
     })
     .catch((err) => {
@@ -25,7 +35,7 @@ async function getUserById(req, res) {
 async function createUser(req, res) {
     const { nombres, apellidos, telefono, email, password, rol } = req.body;
     try{
-        await connection.db.transaction(async trx => {
+        await db.transaction(async trx => {
             const id_persona = await trx('personas').insert({
                 nombres: nombres,
                 apellidos: apellidos,
@@ -51,7 +61,7 @@ async function createUser(req, res) {
 async function updateUser(req, res) {
     const id = req.params.id;
     const { nombres, apellidos, telefono, email, password, rol, id_persona } = req.body;
-    await connection.db('usuarios').where('id', id).update({
+    await db('usuarios').where('id', id).update({
         email: email,
         password: password,
         rol: rol
@@ -62,7 +72,7 @@ async function updateUser(req, res) {
         console.log(err);
         return res.status(500).json({ message: 'Error al actualizar el usuario' });
     });
-    await connection.db('personas').where('id', id_persona).update({
+    await db('personas').where('id', id_persona).update({
         nombres: nombres,
         apellidos: apellidos,
         telefono: telefono,
@@ -78,7 +88,7 @@ async function updateUser(req, res) {
 }
 async function deleteUser(req, res) {
     const id_persona = req.params.id;
-    await connection.db('personas').where('id', id_persona).del()
+    await db('personas').where('id', id_persona).del()
     .then((count) => {
         console.log(count);
         res.status(200).json({ message: 'Usuario eliminado correctamente' });
@@ -94,10 +104,11 @@ async function verifyCredentials(req, res) {
     console.log("login");
     try {
       // Realizar la consulta en la base de datos para verificar las credenciales
-      const user = await connection.db
-        .select()
-        .from('usuarios')
-        .innerJoin('personas', 'usuarios.id_persona', 'personas.id')
+      const user = await db
+        .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
+        'u.password', db.raw("IF(u.rol = 1, 'Administrador', 'Empleado') AS rol"), 'u.id_persona')
+        .from('personas as p')
+        .join('usuarios as u', 'p.id', 'u.id_persona')
         .where('usuarios.email', email)
         .andWhere('usuarios.password', password)
         .first();
