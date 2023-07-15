@@ -18,6 +18,7 @@ async function getAllUsers(req, res) {
     
 }
 async function getUserById(req, res) {
+    console.log("Usuario individual")
     const id = req.params.id;
     await db
     .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
@@ -101,7 +102,7 @@ async function deleteUser(req, res) {
 
 async function verifyCredentials(req, res) {
     const { email, password } = req.body;
-    console.log("login");
+    //console.log("login");
     try {
       // Realizar la consulta en la base de datos para verificar las credenciales
       const user = await db
@@ -113,8 +114,10 @@ async function verifyCredentials(req, res) {
         .andWhere('usuarios.password', password)
         .first();
       if (user) {
+        console.log("Sesion Iniciada");
         res.status(200).json({ loggedIn: true });
       } else {
+        console.log("No se pudo iniciar sesion");
         res.json({ loggedIn: false });
       }
     } catch (err) {
