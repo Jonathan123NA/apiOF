@@ -1,8 +1,6 @@
 const db = require('../db');
 
 async function getAllUsers(req, res) {
-    console.log("usuarios");
-
     await db
     .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
     'u.password', db.raw("IF(u.rol = 1, 'Administrador', 'Empleado') AS rol"), 'u.id_persona')
@@ -22,7 +20,7 @@ async function getUserById(req, res) {
     const id = req.params.id;
     await db
     .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
-    'u.password', db.raw("IF(u.rol = 1, 'Administrador', 'Empleado') AS rol"), 'u.id_persona')
+    'u.password', 'u.rol', 'u.id_persona')
     .from('personas as p')
     .join('usuarios as u', 'p.id', 'u.id_persona')
     .then((data) => {
@@ -110,8 +108,8 @@ async function verifyCredentials(req, res) {
         'u.password', db.raw("IF(u.rol = 1, 'Administrador', 'Empleado') AS rol"), 'u.id_persona')
         .from('personas as p')
         .join('usuarios as u', 'p.id', 'u.id_persona')
-        .where('usuarios.email', email)
-        .andWhere('usuarios.password', password)
+        .where('u.email', email)
+        .andWhere('u.password', password)
         .first();
       if (user) {
         console.log("Sesion Iniciada");

@@ -3,7 +3,7 @@ const db = require('../db');
 function getAllArticles(req, res) {
     db
     .select('a.id', 'a.nombre', 'a.descripcion', 'a.cantidad', 't.tipo')
-    .select(db.db.raw("IF(a.estado = 1, 'Activo', 'Inactivo') AS estado"))
+    .select(db.raw("IF(a.estado = 1, 'Activo', 'Inactivo') AS estado"))
     .from('articulos as a')
     .join('tipo_articulos as t', 'a.id_tipo', 't.id').then((data) => {
         return res.status(200).json(data);
@@ -16,15 +16,16 @@ function getAllArticles(req, res) {
 function getArticleById(req, res) {
     const id = req.params.id;
     db
-    .select('a.id', 'a.nombre', 'a.descripcion', 'a.cantidad', 't.tipo')
-    .select(db.db.raw("IF(a.estado = 1, 'Activo', 'Inactivo') AS estado"))
+    .select('a.id', 'a.nombre', 'a.descripcion', 'a.cantidad', 'a.estado', 'a.id_tipo', 't.tipo')
     .from('articulos as a')
     .join('tipo_articulos as t', 'a.id_tipo', 't.id')
-    .where('id', id)
+    .where('a.id', id)
     .then((data) => {
+        if (data.length == 0) return res.status(404).json({ message: 'Articulo no encontrado' });
         return res.status(200).json(data[0]);
     })
     .catch((err) => {
+        console.log(err);
         return res.status(500).json({ message: 'Error al obtener el articulo' });
     });
 }
