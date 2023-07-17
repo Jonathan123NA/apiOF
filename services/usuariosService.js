@@ -16,14 +16,15 @@ async function getAllUsers(req, res) {
     
 }
 async function getUserById(req, res) {
-    console.log("Usuario individual")
     const id = req.params.id;
     await db
     .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
     'u.password', 'u.rol', 'u.id_persona')
     .from('personas as p')
     .join('usuarios as u', 'p.id', 'u.id_persona')
+    .where('u.id', id)
     .then((data) => {
+        if (data.length == 0) return res.status(404).json({ message: 'Usuario no encontrado' });
         res.status(200).json(data[0]);
     })
     .catch((err) => {
@@ -89,6 +90,7 @@ async function deleteUser(req, res) {
     const id_persona = req.params.id;
     await db('personas').where('id', id_persona).del()
     .then((count) => {
+        if (count == 0) return res.status(404).json({ message: 'Usuario no encontrado' });
         console.log(count);
         res.status(200).json({ message: 'Usuario eliminado correctamente' });
     })
