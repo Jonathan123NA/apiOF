@@ -34,6 +34,14 @@ router.post('/tipo_articulos/', serviceTypeArticle.createTypeArticle);
 router.delete('/tipo_articulos/:id', serviceTypeArticle.deleteTypeArticle);
 router.put('/tipo_articulos/:id', serviceTypeArticle.updateTypeArticle);
 
+//Rutas de lista temporal de articulos
+const serviceTypeTempotal = require('./services/temporal_lista_articulos');
+router.get('/temporalLA/', serviceTypeTempotal.getAlltemporalLA);
+router.get('/temporalLA/:id', serviceTypeTempotal.gettemporalLAById);
+router.post('/temporalLA/', serviceTypeTempotal.createtemporalLA);
+router.delete('/temporalLA/:id', serviceTypeTempotal.deletetemporalLA);
+router.put('/temporalLA/:id', serviceTypeTempotal.updatetemporalLA);
+
 //Endpoint para verificar las credenciales del usuario
 router.post('/verificar-credenciales', serviceUsuarios.verifyCredentials);
 
