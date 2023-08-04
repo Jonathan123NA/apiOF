@@ -25,7 +25,9 @@ function gettemporalLAById(req, res) {
 function createtemporalLA(req, res) {
     const cantidad = req.body;
     const id_articulo = req.body;
-    db.insert(cantidad, id_articulo).into('temporal_lista_articulos').then((result) => {
+    const articulo = req.body;
+    db.insert(cantidad, id_articulo, articulo).into('temporal_lista_articulos').then((result) => {
+        console.log("temporal_lista_articulos");
         return res.status(200).json({ message: 'articulo añadido en la lista temporal!' });
     }).catch((err) => {
         console.log(err);
@@ -47,8 +49,9 @@ function deletetemporalLA(req, res) {
 function updatetemporalLA(req, res) {
     const cantidad = req.body;
     const id_articulo = req.body;
+    const nombre = req.body;
     const id = req.params.id;
-    db('temporal_lista_articulos').where('idtemporal_lista_articulos', id).update(cantidad, id_articulo).then((count) => {
+    db('temporal_lista_articulos').where('idtemporal_lista_articulos', id).update(cantidad, id_articulo, nombre).then((count) => {
         if (count === 0) return res.status(404).send('Articulo de la lista temporal no encontrada');
         return res.json({ message: 'articulo en la lista temporal actualizada!' });
     }).catch((err) => {

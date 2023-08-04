@@ -22,6 +22,7 @@ router.put('/actualizacionOrden/:id', serviceOrdenes.updateOrden);
 const serviceUsuarios = require('./services/usuariosService');
 router.get('/usuarios/', serviceUsuarios.getAllUsers);
 router.get('/usuarios/:id', serviceUsuarios.getUserById);
+router.get('/usuariosRol', serviceUsuarios.getUserByRol);
 router.post('/usuarios/', serviceUsuarios.createUser);
 router.delete('/usuarios/:id', serviceUsuarios.deleteUser);
 router.put('/usuarios/:id', serviceUsuarios.updateUser);

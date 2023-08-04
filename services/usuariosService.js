@@ -32,6 +32,24 @@ async function getUserById(req, res) {
         res.status(500).json({ message: 'Error al obtener el usuario' });
     });
 }
+
+async function getUserByRol(req, res) {
+    await db
+        .select('u.id', 'p.nombres', 'p.apellidos', 'p.telefono', 'u.email',
+            'u.password', db.raw("IF(u.rol = 1, 'Administrador', 'Empleado') AS rol"), 'u.id_persona')
+        .from('personas as p')
+        .join('usuarios as u', 'p.id', 'u.id_persona')
+        .where('u.rol', 0) // Filtrar solo los usuarios con rol igual a 0
+        .then((data) => {
+            res.status(200).json(data);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({ message: 'Error al obtener los usuarios' });
+        });
+}
+
+
 async function createUser(req, res) {
     const { nombres, apellidos, telefono, email, password, rol } = req.body;
     try{
@@ -129,6 +147,7 @@ async function verifyCredentials(req, res) {
 module.exports = {
     getAllUsers,
     getUserById,
+    getUserByRol,
     createUser,
     updateUser,
     deleteUser,
