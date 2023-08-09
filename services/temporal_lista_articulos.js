@@ -48,10 +48,8 @@ function deletetemporalLA(req, res) {
 
 function updatetemporalLA(req, res) {
     const cantidad = req.body;
-    const id_articulo = req.body;
-    const nombre = req.body;
     const id = req.params.id;
-    db('temporal_lista_articulos').where('idtemporal_lista_articulos', id).update(cantidad, id_articulo, nombre).then((count) => {
+    db('temporal_lista_articulos').where('idtemporal_lista_articulos', id).update(cantidad).then((count) => {
         if (count === 0) return res.status(404).send('Articulo de la lista temporal no encontrada');
         return res.json({ message: 'articulo en la lista temporal actualizada!' });
     }).catch((err) => {
