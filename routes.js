@@ -46,4 +46,12 @@ router.put('/temporalLA/:id', serviceTypeTempotal.updatetemporalLA);
 //Endpoint para verificar las credenciales del usuario
 router.post('/verificar-credenciales', serviceUsuarios.verifyCredentials);
 
+//Rutas para la orden de los articulos
+const serviceOrderArticles = require('./services/ordenArticulosService');
+router.get('/orden_articulos/', serviceOrderArticles.getAllOrderArticles);
+router.get('/orden_articulos/:idOrden/:idArticulo', serviceOrderArticles.getOrderArticleById);
+router.post('/orden_articulos/', serviceOrderArticles.createOrderArticle);
+router.delete('/orden_articulos/:idOrden/:idArticulo', serviceOrderArticles.deleteOrderArticle);
+router.put('/orden_articulos/:idOrden/:idArticulo', serviceOrderArticles.updateOrderArticle);
+
 module.exports = router;
