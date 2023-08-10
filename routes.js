@@ -46,12 +46,20 @@ router.put('/temporalLA/:id', serviceTypeTempotal.updatetemporalLA);
 //Endpoint para verificar las credenciales del usuario
 router.post('/verificar-credenciales', serviceUsuarios.verifyCredentials);
 
-//Rutas para la orden de los articulos
+//Rutas para la relación entre ordenes y articulos
 const serviceOrderArticles = require('./services/ordenArticulosService');
 router.get('/orden_articulos/', serviceOrderArticles.getAllOrderArticles);
 router.get('/orden_articulos/:idOrden/:idArticulo', serviceOrderArticles.getOrderArticleById);
 router.post('/orden_articulos/', serviceOrderArticles.createOrderArticle);
 router.delete('/orden_articulos/:idOrden/:idArticulo', serviceOrderArticles.deleteOrderArticle);
 router.put('/orden_articulos/:idOrden/:idArticulo', serviceOrderArticles.updateOrderArticle);
+
+// Rutas para la relación entre órdenes y usuarios
+const serviceOrderUsers = require('./services/ordenUsuariosService');
+router.get('/orden_usuarios', serviceOrderUsers.getAllOrderUsuarios);
+router.get('/orden_usuarios/:idOrden/:idUsuario', serviceOrderUsers.getOrderUsuarioById);
+router.post('/orden_usuarios', serviceOrderUsers.createOrderUsuario);
+router.delete('/orden_usuarios/:idOrden/:idUsuario', serviceOrderUsers.deleteOrderUsuario);
+router.put('/orden_usuarios/:idOrden/:idUsuario', serviceOrderUsers.updateOrderUsuario);
 
 module.exports = router;
