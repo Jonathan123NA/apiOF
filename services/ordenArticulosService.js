@@ -9,7 +9,7 @@ function getAllOrderArticles(req, res) {
       })
       .catch((err) => {
         console.log(err);
-        return res.status(500).json({ message: 'Error al obtener los articulos de la orden' });
+        return res.status(500).json({ message: 'Error al obtener la relación entre la orden y el artículo' });
       });
 }
 
@@ -22,13 +22,13 @@ function getOrderArticleById(req, res) {
       .where('oa.id_articulo', idArticulo)
       .then((data) => {
         if (data.length === 0) {
-          return res.status(404).json({ message: 'Articulo de la orden no encontrado' });
+          return res.status(404).json({ message: 'Relación entre orden y artículo no encontrada' });
         }
         return res.status(200).json(data[0]);
       })
       .catch((err) => {
         console.log(err);
-        return res.status(500).json({ message: 'Error al obtener el articulo de la orden' });
+        return res.status(500).json({ message: 'Error al obtener la relación entre la orden y el artículo' });
       });
 }
 
@@ -36,11 +36,11 @@ function createOrderArticle(req, res) {
     const orderArticle = req.body;
     db.insert(orderArticle).into('orden_articulos')
       .then(() => {
-        return res.status(200).json({ message: 'Articulo de la orden añadido!' });
+        return res.status(200).json({ message: 'Relación entre orden y artículo añadida!' });
       })
       .catch((err) => {
         console.log(err);
-        return res.status(500).json({ message: 'Error al añadir el articulo de la orden, asegurate de que primero exista el artículo' });
+        return res.status(500).json({ message: 'Error al añadir la relación entre la orden y el artículo' });
       }); 
 }
 
@@ -53,13 +53,13 @@ function deleteOrderArticle(req, res) {
       .del()
       .then((count) => {
         if (count === 0) {
-          return res.status(404).send('Articulo u orden no encontrado');
+          return res.status(404).send('Relación entre orden y artículo no encontrado');
         }
-        return res.status(200).json({ message: 'Articulo de la orden eliminado!' });
+        return res.status(200).json({ message: 'Relación entre orden y artículo eliminado!' });
       })
       .catch((err) => {
         console.log(err);
-        return res.status(500).json({ message: 'Error al eliminar el articulo de la orden, asegurese de que el artículo exista' });
+        return res.status(500).json({ message: 'Error al eliminar la relación entre la orden y el artículo' });
       });
 }
 
@@ -73,13 +73,13 @@ function updateOrderArticle(req, res) {
       .update(orderArticle)
       .then((count) => {
         if (count === 0) {
-          return res.status(404).send('Articulo de la orden no encontrado');
+          return res.status(404).send('Relación entre orden y artículo no encontrada');
         }
-        return res.status(200).json({ message: 'Articulo de la orden actualizado!' });
+        return res.status(200).json({ message: 'Relación entre orden y artículo actualizada!' });
       })
       .catch((err) => {
         console.log(err);
-        return res.status(500).json({ message: 'Error al actualizar el articulo de la orden, asegurese de que el artículo exista' });
+        return res.status(500).json({ message: 'Error al actualizar la relación entre la orden y el artículo' });
       });
 }
 
