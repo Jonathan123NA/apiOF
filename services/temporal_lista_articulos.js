@@ -46,6 +46,22 @@ function deletetemporalLA(req, res) {
     });
 }
 
+function deletetemporalLAALL(req, res) {
+    db('temporal_lista_articulos')
+        .del()
+        .then((count) => {
+            if (count === 0) {
+                return res.status(404).send('No se encontraron registros en la lista temporal');
+            }
+            return res.json({ message: 'Lista temporal de articulos eliminada!' });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.status(500).json({ message: 'Error al eliminar registros de la lista temporal' });
+        });
+}
+
+
 function updatetemporalLA(req, res) {
     const cantidad = req.body;
     const id = req.params.id;
@@ -63,5 +79,6 @@ module.exports = {
     gettemporalLAById,
     createtemporalLA,
     deletetemporalLA,
+    deletetemporalLAALL,
     updatetemporalLA
 };

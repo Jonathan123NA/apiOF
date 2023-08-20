@@ -60,10 +60,25 @@ function updateOrden(req, res) {
     });
 }
 
+function getNextOrderId(req, res) {
+    db.raw("SELECT MAX(id) AS last_id FROM ordenes;")
+      .then((result) => {
+        const lastId = result[0][0].last_id;
+        const nextOrderId = lastId + 1;
+        return res.status(200).json({ nextOrderId });
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: 'Error al obtener el próximo ID de orden' });
+      });
+  }  
+  
+
 module.exports = {
     getAllOrden,
     getOrdenById,
     createOrden,
     deleteOrden,
-    updateOrden
+    updateOrden,
+    getNextOrderId
 };

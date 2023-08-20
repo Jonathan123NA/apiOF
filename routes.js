@@ -17,6 +17,7 @@ router.get('/consultaOrden/:id', serviceOrdenes.getOrdenById);
 router.post('/creacionOrden/', serviceOrdenes.createOrden);
 router.delete('/eliminacionOrden/:id', serviceOrdenes.deleteOrden);
 router.put('/actualizacionOrden/:id', serviceOrdenes.updateOrden);
+router.get('/nextIDOrden/', serviceOrdenes.getNextOrderId);
 
 // Rutas Usuarios
 const serviceUsuarios = require('./services/usuariosService');
@@ -41,6 +42,8 @@ router.get('/temporalLA/', serviceTypeTempotal.getAlltemporalLA);
 router.get('/temporalLA/:id', serviceTypeTempotal.gettemporalLAById);
 router.post('/temporalLA/', serviceTypeTempotal.createtemporalLA);
 router.delete('/temporalLA/:id', serviceTypeTempotal.deletetemporalLA);
+//Eliminar todos
+router.delete('/temporalLAAL/', serviceTypeTempotal.deletetemporalLAALL);
 router.put('/temporalLA/:id', serviceTypeTempotal.updatetemporalLA);
 
 //Endpoint para verificar las credenciales del usuario
@@ -57,6 +60,8 @@ router.put('/orden_articulos/:idOrden/:idArticulo', serviceOrderArticles.updateO
 // Rutas para la relación entre órdenes y usuarios
 const serviceOrderUsers = require('./services/ordenUsuariosService');
 router.get('/orden_usuarios', serviceOrderUsers.getAllOrderUsuarios);
+//Por usuario
+router.get('/orden_usuarios/:idUsuario', serviceOrderUsers.getAllOrderUsuarios);
 router.get('/orden_usuarios/:idOrden/:idUsuario', serviceOrderUsers.getOrderUsuarioById);
 router.post('/orden_usuarios', serviceOrderUsers.createOrderUsuario);
 router.delete('/orden_usuarios/:idOrden/:idUsuario', serviceOrderUsers.deleteOrderUsuario);
